@@ -51,6 +51,9 @@ namespace TouchNS.WinForms;
         TB_TouchDuration = new TextBox();
         LB_Log = new ListBox();
         B_ClearSelected = new Button();
+        L_Test = new Label();
+        TB_Test = new TextBox();
+        B_TouchType = new Button();
         GB_Connection.SuspendLayout();
         GB_SAVInfo.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)PB_Touch).BeginInit();
@@ -276,7 +279,7 @@ namespace TouchNS.WinForms;
         LB_Log.FormattingEnabled = true;
         LB_Log.Location = new Point(12, 302);
         LB_Log.Name = "LB_Log";
-        LB_Log.Size = new Size(194, 424);
+        LB_Log.Size = new Size(194, 349);
         LB_Log.TabIndex = 26;
         // 
         // B_ClearSelected
@@ -289,11 +292,43 @@ namespace TouchNS.WinForms;
         B_ClearSelected.UseVisualStyleBackColor = true;
         B_ClearSelected.Click += B_ClearSelected_Click;
         // 
+        // L_Test
+        // 
+        L_Test.AutoSize = true;
+        L_Test.Location = new Point(12, 654);
+        L_Test.Name = "L_Test";
+        L_Test.Size = new Size(65, 15);
+        L_Test.TabIndex = 29;
+        L_Test.Text = "Test String:";
+        // 
+        // TB_Test
+        // 
+        TB_Test.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        TB_Test.Location = new Point(12, 672);
+        TB_Test.MaxLength = 15;
+        TB_Test.Name = "TB_Test";
+        TB_Test.Size = new Size(194, 22);
+        TB_Test.TabIndex = 28;
+        TB_Test.Text = "LegoFigure11";
+        // 
+        // B_TouchType
+        // 
+        B_TouchType.Location = new Point(11, 701);
+        B_TouchType.Name = "B_TouchType";
+        B_TouchType.Size = new Size(195, 25);
+        B_TouchType.TabIndex = 30;
+        B_TouchType.Text = "Touch Type!";
+        B_TouchType.UseVisualStyleBackColor = true;
+        B_TouchType.Click += B_TouchType_Click;
+        // 
         // MainWindow
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1506, 733);
+        Controls.Add(B_TouchType);
+        Controls.Add(L_Test);
+        Controls.Add(TB_Test);
         Controls.Add(B_ClearSelected);
         Controls.Add(LB_Log);
         Controls.Add(L_TouchDuration);
@@ -346,5 +381,8 @@ namespace TouchNS.WinForms;
     private TextBox TB_TouchDuration;
     private ListBox LB_Log;
     private Button B_ClearSelected;
+    private Label L_Test;
+    private TextBox TB_Test;
+    private Button B_TouchType;
 }
 

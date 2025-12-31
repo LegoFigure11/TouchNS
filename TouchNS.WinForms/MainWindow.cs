@@ -532,4 +532,114 @@ public partial class MainWindow : Form
         var response = client.GetAsync(url).Result;
         return response.IsSuccessStatusCode ? response.Content.ReadAsStream() : null;
     }
+
+    private Dictionary<char, (int x, int y, bool needsShift)> KeyDict = new()
+    {
+        {'1', (100, 359, false)}, {'#', (100, 359, true)},
+        {'2', (192, 359, false)}, {'£', (192, 359, true)},
+        {'3', (293, 359, false)}, {'€', (293, 359, true)},
+        {'4', (406, 359, false)}, {'$', (406, 359, true)},
+        {'5', (475, 359, false)}, {'%', (475, 359, true)},
+        {'6', (597, 359, false)}, {'^', (597, 359, true)},
+        {'7', (679, 359, false)}, {'&', (679, 359, true)},
+        {'8', (772, 359, false)}, {'*', (772, 359, true)},
+        {'9', (864, 359, false)}, {'(', (864, 359, true)},
+        {'0', (964, 359, false)}, {')', (964, 359, true)},
+        {'-', (1052, 359, false)}, {'_', (1052, 359, true)},
+        {'q', (103, 432, false)},
+        {'w', (186, 432, false)},
+        {'e', (290, 432, false)},
+        {'r', (394, 432, false)},
+        {'t', (483, 432, false)},
+        {'y', (576, 432, false)},
+        {'u', (684, 432, false)},
+        {'i', (767, 432, false)},
+        {'o', (873, 432, false)},
+        {'p', (950, 432, false)},
+        {'/', (1055, 432, false)},
+        {'a', (98, 493, false)},
+        {'s', (198, 493, false)},
+        {'d', (283, 493, false)},
+        {'f', (379, 493, false)},
+        {'g', (490, 493, false)},
+        {'h', (571, 493, false)},
+        {'j', (673, 493, false)},
+        {'k', (764, 493, false)},
+        {'l', (870, 493, false)},
+        {':', (966, 493, false)}, {';', (966, 493, true)},
+        {'\'', (1055, 493, false)}, {'"', (1055, 493, true)},
+        {'z', (100, 555, false)},
+        {'x', (188, 555, false)},
+        {'c', (283, 555, false)},
+        {'v', (379, 555, false)},
+        {'b', (489, 555, false)},
+        {'n', (589, 555, false)},
+        {'m', (655, 555, false)},
+        {',', (767, 555, false)}, {'<', (767, 555, true)},
+        {'.', (853, 555, false)}, {'>', (853, 555, true)},
+        {'?', (957, 555, false)}, {'+', (957, 555, true)},
+        {'!', (1056, 555, false)}, {'=', (1056, 555, true)},
+        {' ', (750, 621, false)},
+    };
+
+    (int x, int y) SHIFT = (195, 621);
+
+    private static bool IsUpper(char test) => test >= 'A' && test <= 'Z';
+    private static char IsLower(char c) => (char)(c | 0x20);
+
+    private void B_TouchType_Click(object sender, EventArgs e)
+    {
+        Task.Run(async () =>
+        {
+            try
+            {
+                if (ConnectionWrapper.Connected)
+                {
+                    string name = GetControlText(TB_Test);
+
+                    bool isCaps = false;
+
+                    List<(int x, int y)> inputs = [(0, 0)];
+
+                    foreach (char c in name)
+                    {
+                        char t = c;
+                        var isUpperCase = IsUpper(c);
+                        if (isUpperCase) t = IsLower(c);
+
+                        if (!KeyDict.TryGetValue(t, out (int x, int y, bool shifty) e))
+                        {
+                            Console.WriteLine($"Character {t} not found! Please customise the routine to fit your needs, or use only available characters.");
+                            continue;
+                        }
+
+                        var needsShift = isUpperCase || e.shifty;
+
+                        if (needsShift != isCaps)
+                        {
+                            inputs.Add(SHIFT);
+                            if (!isCaps) inputs.Add(SHIFT); // press again set to caps lock if not already on caps
+                            isCaps = !isCaps;
+                        }
+
+                        inputs.Add((e.x, e.y));
+                    }
+
+                    foreach ((int x, int y) in inputs)
+                    {
+                        await ConnectionWrapper.Touch(x, y, 50, 80, Source.Token).ConfigureAwait(false);
+                    }
+
+                    await Task.Delay(200, Source.Token).ConfigureAwait(false);
+                    var img = await GetPixelPeek().ConfigureAwait(false);
+                    SetPictureBoxImage(img, PB_Touch);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.DisplayMessageBox(ex.Message);
+                return;
+            }
+        });
+    }
 }
