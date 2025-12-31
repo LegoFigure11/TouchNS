@@ -5,11 +5,10 @@ public partial class UpdateNotifPopup : Form
     private readonly Version cv;
     private readonly Version nv;
     private readonly bool topmost;
-    public UpdateNotifPopup(Version currentVersion, Version newVersion, bool topMost = false)
+    public UpdateNotifPopup(Version currentVersion, Version newVersion)
     {
         cv = currentVersion;
         nv = newVersion;
-        topmost = topMost;
         InitializeComponent();
     }
 
