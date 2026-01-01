@@ -585,7 +585,7 @@ public partial class MainWindow : Form
     (int x, int y) SHIFT = (195, 621);
 
     private static bool IsUpper(char test) => test >= 'A' && test <= 'Z';
-    private static char IsLower(char c) => (char)(c | 0x20);
+    private static char ToLower(char c) => (char)(c | 0x20);
 
     private void B_TouchType_Click(object sender, EventArgs e)
     {
@@ -605,7 +605,7 @@ public partial class MainWindow : Form
                     {
                         char t = c;
                         var isUpperCase = IsUpper(c);
-                        if (isUpperCase) t = IsLower(c);
+                        if (isUpperCase) t = ToLower(c);
 
                         if (!KeyDict.TryGetValue(t, out (int x, int y, bool shifty) e))
                         {
