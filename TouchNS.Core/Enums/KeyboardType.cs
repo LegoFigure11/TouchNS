@@ -9,7 +9,7 @@ public enum KeyboardType
     French_Canada,
     Français_Canada = French_Canada,
     German,
-    Deutsh = German,
+    Deutsch = German,
     Spanish_Spain,
     Español = Spanish_Spain,
     Spanish_LATAM,
