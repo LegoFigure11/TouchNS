@@ -2,6 +2,7 @@ using SysBot.Base;
 using System.Diagnostics;
 using System.Text.Json;
 using TouchNS.Core.Connection;
+using TouchNS.WinForms.Subforms;
 
 namespace TouchNS.WinForms;
 
